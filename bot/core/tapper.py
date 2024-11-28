@@ -94,6 +94,7 @@ class Tapper:
         self.template_to_join = 0
         self.completed_task = None
         self.query_anti = None
+        self.npx = "a085e2e8-366c-4013-a53d-dce28c7afe16"
 
     async def get_tg_web_data(self, proxy: str | None) -> str:
         try:
@@ -278,7 +279,9 @@ class Tapper:
             logger.success(f"{self.session_name} | <green>Upgrade energy limit successfully!</green>")
 
     def claimpx(self, session):
-        res = session.get(f"{API_GAME_ENDPOINT}/mining/claim", headers=headers)
+        claim_headers = headers.copy()
+        claim_headers.update({"Npx": self.npx})
+        res = session.get(f"{API_GAME_ENDPOINT}/mining/claim", headers=claim_headers)
         if res.status_code == 200:
             logger.success(
                 f"{self.session_name} | Successfully claimed <cyan>{res.json()['claimed']}</cyan> px from mining!")
